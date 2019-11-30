@@ -1,0 +1,48 @@
+{{>navbar}}
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="jumbotron">
+                <form class="needs-validation" method="POST" action="{{route}}" novalidate>
+                    <h2>{{titleExtend}}</h2>
+                    <hr />
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroupPrepend">#</span>
+                            </div>
+                            <input type="text" class="form-control" name="username" id="username" placeholder="Username"
+                                value="{{flash.username}}" aria-describedby="inputGroupPrepend" required
+                                autocomplete="off">
+                            <div class="invalid-feedback">
+                                Please choose a username.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                            required autocomplete="off">
+                        <div class="invalid-feedback">
+                            Please enter a password
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Log In</button>
+                </form>
+                <div class="tip">
+                    <a href="/signup">Don't have an account? Sign up here.</a>
+                </div>
+            </div>
+            {{#if flash}}
+                <div class="container">
+                    <div class="alert alert-danger" role="alert">
+                        {{flash.error}}
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+        <div class="col-3"></div>
+    </div>
+</main>

@@ -1,0 +1,110 @@
+html,
+body {
+  height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding-top: 70px;
+}
+
+.vertical-center {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+
+  margin: auto;
+  min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+}
+
+.alert-box {
+  height: max-content;
+}
+
+.nav-button {
+  margin-left: 10px;
+}
+
+h2 {
+  font-size: 2.5em;
+}
+
+.margin-fix {
+  margin-left: 0;
+}
+
+.scroll-this {
+  height: calc(100% - 70px);
+  overflow-y: auto;
+}
+
+.fix-drop {
+  padding: 0;
+}
+
+.no-scroll {
+  height: calc(100vh - 70px);
+  overflow: hidden;
+}
+
+.fix-height {
+  height: calc(100vh - 110px);
+}
+
+.btn-label {
+  position: relative;
+  left: -12px;
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px 0 0 3px;
+}
+
+.btn-labeled {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.btn-icon {
+  position: absolute;
+  transform: translateY(10px);
+}
+
+.hidden {
+  display: none;
+}
+
+textarea {
+  resize: none;
+}
+
+.tip {
+  margin-top: 20px;
+}
+
+.yellow {
+  color: #ffd800;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #007bff;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #0d62bd;
+}

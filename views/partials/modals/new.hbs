@@ -1,0 +1,48 @@
+<!-- Modal -->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="createNote" tabindex="-1" role="dialog"
+    aria-labelledby="newNoteModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newNoteModal">New Note</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;">
+                </iframe>
+                <form action="/note" method="POST" onsubmit="return false;" id="newNoteForm" class="needs-validation"
+                    target="hiddenFrame" novalidate>
+                    <div class="form-group">
+                        <label for="noteTitle">Note title</label>
+                        <input type="text" class="form-control" name="title" id="noteTitle" required="true"
+                            autocomplete="off" maxlength="30" placeholder="Title" />
+                        <div class="invalid-feedback">
+                            Note must have a title.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox mb-0">
+                            <label><input type="checkbox" id="hideDate"> Date</label>
+                        </div>
+                        <div id="picker"></div>
+                        <input class="form-control" name="flash_date" type="hidden" id="result" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="noteText">Note</label>
+                        <textarea class="form-control" name="text" id="noteText" required rows="5"
+                            autocomplete="off"></textarea>
+                        <div class="invalid-feedback">
+                            Note must have a text.
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="reset" form="newNoteForm" value="Cancel" class="btn btn-secondary" data-dismiss="modal" />
+                <input type="submit" form="newNoteForm" id="sendNew" value="Save Note" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</div>

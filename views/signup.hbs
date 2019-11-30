@@ -1,0 +1,111 @@
+{{>navbar}}
+<main role="main" class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-8">
+      <div class="jumbotron">
+        <form class="needs-validation" method="POST" action="{{route}}" novalidate>
+          <h2>{{titleExtend}}</h2>
+          <hr />
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="firstName">First Name</label>
+              <input type="text" class="form-control" id="firstName" pattern="^[a-zA-Z ,.'-]+$" minlength="2"
+                value="{{flash.data.first_name}}" maxlength="20" name="first_name" placeholder="First Name" required
+                autocomplete="off">
+              <div class="invalid-feedback">
+                Please provide your first name.
+              </div>
+            </div>
+            <div class="form-group col-6">
+              <label for="lastName">Last Name</label>
+              <input type="text" class="form-control" id="lastName" pattern="^[a-zA-Z ,.'-]+$" minlength="2"
+                value="{{flash.data.last_name}}" maxlength="20" name="last_name" placeholder="Last name" required
+                autocomplete="off">
+              <div class="invalid-feedback">
+                Please provide your last name.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-7">
+              <label for="email">Email address</label>
+              <input type="email" class="form-control" id="email"
+                pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+                value="{{flash.data.email}}" name="email" placeholder="name@example.com" required autocomplete="off">
+              <div class="invalid-feedback">
+                Please provide email address.
+              </div>
+            </div>
+            <div class="form-group col-5">
+              <label for="username">Username</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroupPrepend">#</span>
+                </div>
+                <input type="text" class="form-control" id="username" pattern="^[a-z]{1}[a-z0-9.]+$" name="username"
+                  value="{{flash.data.username}}" minlength="8" maxlength="30" placeholder="Username"
+                  aria-describedby="inputGroupPrepend" required autocomplete="off">
+                <div class="invalid-feedback">
+                  Please provide a username.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-7">
+              <label for="phone">Phone number</label>
+              <input type="tel" class="form-control" id="phone" pattern="^[+\-0-9]+$" name="phone"
+                value="{{flash.data.phone}}" placeholder="Phone number" required autocomplete="off">
+              <div class="invalid-feedback">
+                Please provide a phone number.
+              </div>
+            </div>
+            <div class="form-group col-5">
+              <label for="gender">Gender</label>
+              <select class="custom-select form-control mr-sm-2" id="gender" name="gender" required>
+                <option value="" selected hidden disabled>Choose...</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="rns">Rather not say</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select your gender.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" minlength="6" maxlength="30" id="password" name="password"
+                placeholder="Password" required autocomplete="off">
+              <div class="invalid-feedback">
+                Please choose you password.
+              </div>
+            </div>
+            <div class="form-group col-6">
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" class="form-control" minlength="6" maxlength="30" id="confirmPassword"
+                placeholder="Confirm password" required autocomplete="off">
+              <div class="invalid-feedback">
+                Passwords do not match.
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+        <div class="tip">
+          <a href="/login">Already have an acount? Log in here.</a>
+        </div>
+      </div> {{#if flash}}
+        <div class="container">
+          <div class="alert alert-danger" role="alert">
+            {{flash.message}}
+          </div>
+        </div>
+      {{/if}}
+    </div>
+    <div class="col"></div>
+  </div>
+</main>
+{{alert flash}}

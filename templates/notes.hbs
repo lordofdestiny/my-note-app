@@ -1,0 +1,15 @@
+{{#each notes}}
+    <a href="#" class="list-group-item list-group-item-action">
+        <div class="d-flex justify-content-between">
+            <h5 class="mb-1">{{this.title}}</h5>
+            <small>{{timeBetween date_created}}</small>
+        </div>
+        <p class="mb-1">{{this.text}}</p>
+        {{#if flash_date}}
+            <small>Assigned for {{momentIt flash_date "DD.MM.YYYY. [at] HH:mm"}}</small>
+        {{else}}
+            <small>Just remember this <i class="fas fa-smile-wink yellow"></i>
+            </small>
+        {{/if}}
+    </a>
+{{/each}}

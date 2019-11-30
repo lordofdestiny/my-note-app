@@ -1,0 +1,6 @@
+{{>navbar}}
+<ul>
+    {{#each (serialize user)}}
+        <li>{{this.[0]}} - {{this.[1]}}</li>
+    {{/each}}
+</ul>

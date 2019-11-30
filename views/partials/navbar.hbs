@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary justify-content-between">
+  <a class="navbar-brand" href="/">
+    {{title}}
+  </a>
+  <button class=" navbar-toggler" type="button" data-toggle="collapse" data-target="#id" aria-controls="id"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="id"> {{#if auth}}
+      <ul class="navbar-nav ml-auto">
+        {{>notes-button}}
+        {{{navbarLink "Profile" "/profile" active}}}
+        <form action="/user/logout" method="GET" class="form-inline nav-button">
+          <button class="btn btn-secondary" type="submit">Log Out</button>
+        </form>
+      </ul>
+    {{/if}}
+  </div>
+</nav>

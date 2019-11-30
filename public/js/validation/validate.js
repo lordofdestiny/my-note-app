@@ -41,8 +41,16 @@ const validateForm = (form, next) => {
   form.classList.add("was-validated");
 
   if (formIsValid) {
-    next();
-  }
+    if (next) {
+      next();
+      form.classList.remove("was-validated");
+      fields.forEach(field => {
+        field
+          .getElementsByClassName("form-control")[0]
+          .classList.remove("is-valid", "is-invalid");
+      });
+    } else return null;
+  } else return formIsValid;
 };
 
 const checkText = (element, cb) => {
@@ -120,16 +128,12 @@ const checkPasswords = (element, fields, cb) => {
 
   if (passwords.length == 1) {
     if (tooShort || tooLong)
-      errorMessage = `Password must be between ${element.minLength} and ${
-        element.maxLength
-      }`;
+      errorMessage = `Password must be between ${element.minLength} and ${element.maxLength}`;
     if (valueMissing) errorMessage = "You have to enter a password.";
   } else if (passwords.length == 2) {
     if (element == passwords[0]) {
       if (tooShort || tooLong)
-        errorMessage = `Password must be between ${element.minLength} and ${
-          element.maxLength
-        }`;
+        errorMessage = `Password must be between ${element.minLength} and ${element.maxLength}`;
       if (valueMissing) errorMessage = "You have to enter a password.";
     } else if (element == passwords[1]) {
       const isMatched = passwords[0].value === passwords[1].value;

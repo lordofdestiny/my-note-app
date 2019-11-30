@@ -30,6 +30,8 @@ router.post("/", authenticate(), (req, res, next) => {
   const user_id = new mongoose.Types.ObjectId(_id);
   const { flash_date } = req.body;
 
+  console.log(flash_date);
+
   const note = new Note({ user_id, ...req.body, flash_date });
   note
     .save()

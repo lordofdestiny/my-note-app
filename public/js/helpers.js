@@ -24,3 +24,7 @@ Handlebars.registerHelper("timeBetween", date => {
 Handlebars.registerHelper("momentIt", (date, format) => {
   return moment(date).format(format);
 });
+
+function parseFlashDate(fd) {
+  return moment(fd, "DD.MM.YYYY HH:mm").toDate();
+}

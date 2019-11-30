@@ -1,7 +1,5 @@
 const es = new EventSource("/note/sse");
 
-$(function() {});
-
 function showAll() {
   $("#allNotes").show();
   $("#todayNotes").hide();
@@ -46,7 +44,7 @@ $(document).ready(() => {
   $result.hide();
   $picker.hide();
 
-  $hideDate.click(function() {
+  $hideDate.change(function() {
     if ($(this).is(":checked")) {
       $result.show();
       $picker.show();
@@ -60,3 +58,16 @@ $(document).ready(() => {
     console.log(data);
   });
 });
+
+//Pull notes from server
+axios
+  .get("/note")
+  .then(result => {
+    const Notes = Handlebars.templates["notes.hbs"];
+    console.log(result.data);
+    const toAppend = Notes(result.data);
+    allNotes.innerHTML += toAppend;
+  })
+  .catch(error => {
+    console.log(error);
+  });

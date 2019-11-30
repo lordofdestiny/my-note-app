@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "preserver": "compile.hbs.bat",
-    "server": "nodemon sever.js"
+    "server": "(startBrowser.bat) & nodemon sever.js"
   },
   "author": "",
   "license": "ISC",

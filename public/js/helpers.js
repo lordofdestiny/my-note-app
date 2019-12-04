@@ -1,29 +1,15 @@
+function toTitleCase(str) {
+  return str.length == 0
+    ? ""
+    : str
+        .split(" ")
+        .map(word => word[0].toUpperCase() + word.substr(1))
+        .join(" ");
+}
+
 String.prototype.toTitleCase = function() {
-  return this.split(" ")
-    .map(word => {
-      return word[0].toUpperCase() + word.substr(1);
-    })
-    .join(" ");
+  return toTitleCase(this);
 };
-
-Handlebars.registerHelper("str", (...strings) => {
-  return strings.slice(0, -1).join(" ");
-});
-
-Handlebars.registerHelper("log", data => {
-  console.log(data);
-  return null;
-});
-
-Handlebars.registerHelper("timeBetween", date => {
-  return moment()
-    .to(date)
-    .toTitleCase();
-});
-
-Handlebars.registerHelper("momentIt", (date, format) => {
-  return moment(date).format(format);
-});
 
 function parseFlashDate(fd) {
   return moment(fd, "DD.MM.YYYY HH:mm").toDate();

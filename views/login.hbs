@@ -15,18 +15,18 @@
                             </div>
                             <input type="text" class="form-control" name="username" id="username" placeholder="Username"
                                 value="{{flash.username}}" aria-describedby="inputGroupPrepend" required
-                                autocomplete="off">
+                                autocomplete="off" minlength="8" maxlength="30">
                             <div class="invalid-feedback">
-                                Please choose a username.
+                                Please enter your username.
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password"
-                            required autocomplete="off">
+                        <input type="password" class="form-control" id="password" name="password" value="" placeholder="Password"
+                            required autocomplete="off" minlength="6" maxlength="30" >
                         <div class="invalid-feedback">
-                            Please enter a password
+                            Please enter your password
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Log In</button>
@@ -46,3 +46,4 @@
         <div class="col-3"></div>
     </div>
 </main>
+{{>defaultValidation}}

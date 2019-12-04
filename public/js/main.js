@@ -1,4 +1,4 @@
-const es = new EventSource("/note/sse");
+// const es = new EventSource("/note/sse");
 
 function showAll() {
   $("#allNotes").show();
@@ -54,20 +54,7 @@ $(document).ready(() => {
     }
   });
 
-  es.addEventListener("date", data => {
-    console.log(data);
-  });
+  // es.addEventListener("new", data => {
+  //   console.log(data);
+  // });
 });
-
-//Pull notes from server
-axios
-  .get("/note")
-  .then(result => {
-    const Notes = Handlebars.templates["notes.hbs"];
-    console.log(result.data);
-    const toAppend = Notes(result.data);
-    allNotes.innerHTML += toAppend;
-  })
-  .catch(error => {
-    console.log(error);
-  });

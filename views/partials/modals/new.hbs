@@ -12,8 +12,8 @@
             <div class="modal-body">
                 <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;">
                 </iframe>
-                <form action="/note" method="POST" onsubmit="return false;" id="newNoteForm" class="needs-validation"
-                    target="hiddenFrame" novalidate>
+                <form action="/note" method="POST" id="newNoteForm" class="needs-validation" onsubmit="return false;"
+                    enctype="application/x-www-form-urlencoded"  target="hiddenFrame" novalidate data-pjax>
                     <div class="form-group">
                         <label for="noteTitle">Note title</label>
                         <input type="text" class="form-control" name="title" id="noteTitle" required="true"
@@ -41,7 +41,7 @@
             </div>
             <div class="modal-footer">
                 <input type="reset" form="newNoteForm" value="Cancel" class="btn btn-secondary" data-dismiss="modal" />
-                <input type="submit" form="newNoteForm" id="sendNew" value="Save Note" class="btn btn-primary" />
+                <input type="submit" form="newNoteForm" value="Save Note" id="sendNew"  class="btn btn-primary" />
             </div>
         </div>
     </div>

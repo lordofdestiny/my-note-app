@@ -64,7 +64,7 @@
             <div class="form-group col-5">
               <label for="gender">Gender</label>
               <select class="custom-select form-control mr-sm-2" id="gender" name="gender" required>
-                <option value="" selected hidden disabled>Choose...</option>
+                <option value="{{flash.data.gender}}" selected hidden disabled>Choose...</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="rns">Rather not say</option>
@@ -95,7 +95,7 @@
           <button type="submit" class="btn btn-primary">Create Account</button>
         </form>
         <div class="tip">
-          <a href="/login">Already have an acount? Log in here.</a>
+          Already have an acount? <a href="/login">Log in here.</a>
         </div>
       </div> {{#if flash}}
         <div class="container">
@@ -108,4 +108,4 @@
     <div class="col"></div>
   </div>
 </main>
-{{alert flash}}
+{{defaultValidation}}

@@ -4,9 +4,8 @@ const error_not_found = (req, res, next) => {
   next(error);
 };
 
-const error_not_catched = (error, req, res, next) => {
-  res.status(error.status || 500);
-  res.json({
+const error_not_catched = (error, req, res) => {
+  res.status(error.status || 500).json({
     error: {
       message: error.message,
       stack: error.stack

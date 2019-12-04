@@ -26,17 +26,19 @@ const user_singup = (req, res, next) => {
       return user.save().then(user => user);
     })
     .then(user => {
-      //later send to /confirm and send email
+      //later redirect to /confirm and send email
       req.login(user, err => {
-        console.log(user);
         res.render("index", { user }); //fix
       });
     })
     .catch(error => {
       const status = error.status ? error.status : 500;
 
-      if (status == 5000) {
-        req.flash("server-error", { message: error.message });
+      if (status == 500) {
+        req.flash("server-error", {
+          message: error.message,
+          stack: error.stack
+        });
         res.redirect("/error");
       } else {
         req.flash("request-error", {

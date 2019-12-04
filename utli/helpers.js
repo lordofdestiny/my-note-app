@@ -1,9 +1,14 @@
+function toTitleCase(str) {
+  return str.length == 0
+    ? ""
+    : str
+        .split(" ")
+        .map(word => word[0].toUpperCase() + word.substr(1))
+        .join(" ");
+}
+
 String.prototype.toTitleCase = function() {
-  return this.split(" ")
-    .map(word => {
-      return word[0].toUpperCase() + word.substr(1);
-    })
-    .join(" ");
+  return toTitleCase(this);
 };
 
 const flashToError = str => {
@@ -16,5 +21,6 @@ const flashToError = str => {
 };
 
 module.exports = {
-  flashToError
+  flashToError,
+  toTitleCase
 };

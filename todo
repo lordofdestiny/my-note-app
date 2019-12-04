@@ -1,0 +1,5 @@
+* Add Server Side Validation feedback  to Log-In and Sign-Up
+* Standardize error screen
+* Make sign up multipage
+* Inplement email verification mechanism on sign up
+* Add ping test

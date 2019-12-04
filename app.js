@@ -4,13 +4,14 @@ const express = require("express");
 const passport = require("passport");
 const mongoose = require("mongoose");
 const flash = require("connect-flash");
-const bodyParser = require("body-parser");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const handlebars = require("express-handlebars");
 const MongoStore = require("connect-mongo")(session);
+const requestLogger = require("./api/middleware/requestLogger");
 
-require("dotenv").config();
+//Import environment configuration
+const config = require("./config");
 
 //Helpers
 const handlebarsHelpers = require("./utli/hbsHelpers");
@@ -25,6 +26,8 @@ const noteRoutes = require("./api/routes/note");
 
 //middleware includes
 const CORS = require("./api/middleware/cors");
+const pjax = require("./api/middleware/pjax");
+const sameSite = require("./api/middleware/sameSite.js");
 const ErrorMiddleware = require("./api/middleware/error");
 
 //Create Handlebars view engine configuration
@@ -48,7 +51,9 @@ app.set("viewes", path.join(__dirname, "views"));
 mongoose.connect(
   "mongodb://localhost:27017/note-app",
   {
-    useNewUrlParser: true
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    appname: "my-note-app"
   },
   (error, db) => {
     if (error) {
@@ -67,15 +72,22 @@ app.use(express.static(path.join(__dirname, "public")));
 //Middlewares
 app.use(morgan("dev"));
 app.use(CORS);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(pjax());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(
+  requestLogger({
+    filter: ["/note"]
+  })
+);
 app.use(cookieParser());
+app.use(sameSite());
 
 //Session setup
 app.use(
   session({
-    secret: process.env.COOKIE_SECRET,
     resave: false,
+    secret: config.secret,
     saveUninitialized: true,
     store: new MongoStore({ mongooseConnection: mongoose.connection })
     //cookie: { maxAge: 60 * 60 * 1000 } //1 Hour
@@ -98,7 +110,6 @@ app.use("/note", noteRoutes);
 passport.use(localStrategy);
 
 app.use(ErrorMiddleware.error_not_found);
-
 app.use(ErrorMiddleware.error_not_catched);
 
 module.exports = app;

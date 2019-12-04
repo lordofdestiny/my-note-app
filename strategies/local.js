@@ -8,7 +8,7 @@ module.exports = new LocalStrategy((username, password, done) => {
     .exec()
     .then(user => {
       if (user.length < 1) {
-        done(null, false, {
+        return done(null, false, {
           message: "This user does not exist!" + "-" + username
         });
       }

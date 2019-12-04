@@ -1,4 +1,4 @@
-const validateForm = (form, next) => {
+const validateForm = form => {
   const wm = new WeakMap();
   const fields = Array.from(form.getElementsByClassName("form-group"));
 
@@ -41,16 +41,14 @@ const validateForm = (form, next) => {
   form.classList.add("was-validated");
 
   if (formIsValid) {
-    if (next) {
-      next();
-      form.classList.remove("was-validated");
-      fields.forEach(field => {
-        field
-          .getElementsByClassName("form-control")[0]
-          .classList.remove("is-valid", "is-invalid");
-      });
-    } else return null;
-  } else return formIsValid;
+    form.classList.remove("was-validated");
+    fields.forEach(field => {
+      field
+        .getElementsByClassName("form-control")[0]
+        .classList.remove("is-valid", "is-invalid");
+    });
+  }
+  return formIsValid;
 };
 
 const checkText = (element, cb) => {

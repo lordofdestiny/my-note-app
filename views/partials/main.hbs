@@ -14,6 +14,7 @@
         <h2>Today</h2>
     </div>
     <div id="allNotes" class="container-fluid list-group scroll-this">
+        {{>notes (dataSet "notes" user.notes "pjax" pjax)}}
     </div>
     <div id="bookmarkNotes" class="container-fluid list-group scroll-this hidden">
         <h2>Bookmarks</h2>

@@ -2,24 +2,25 @@ const allNotes = document.getElementById("allNotes");
 const newNoteForm = document.getElementById("newNoteForm");
 const sendNew = document.getElementById("sendNew");
 
-newNoteForm.addEventListener("submit", function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-
-  validateForm(this, () => {
+$(newNoteForm).submit("form[data-pjax]", function(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  const valid = validateForm(this);
+  if (valid) {
     const data = Object.fromEntries(new FormData(this).entries());
     const fd = data.flash_date;
     data.flash_date = fd == "" ? null : parseFlashDate(fd);
     axios
       .post("/note", data)
       .then(result => {
-        const Note = Handlebars.templates["note.hbs"];
-        const newNote = Note(result.data.note);
-        const html = $.parseHTML(newNote)[0];
-        allNotes.prepend(html);
+        $.pjax.reload("#allNotes", {
+          push: false,
+          replace: true,
+          timeout: 3000,
+          fragment: "#allNotes"
+        });
       })
       .catch(error => {
-        console.log(error);
         alert("Note wasnt created! We are sorry for the inconvinience!");
       })
       .finally(() => {
@@ -29,5 +30,5 @@ newNoteForm.addEventListener("submit", function(e) {
         $("#picker").hide();
         $("#result").hide();
       });
-  });
+  }
 });

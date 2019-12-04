@@ -1,4 +1,3 @@
-const path = require("path");
 const express = require("express");
 const router = express.Router();
 
@@ -15,9 +14,5 @@ router.get("/login", pageController.page_login);
 router.get("/signup", pageController.page_signup);
 
 router.get("/error", pageController.page_error);
-
-router.get("/vue", authenticate(), (req, res) => {
-  res.sendFile(path.join(__dirname, "../", "../", "public", "test.html"));
-});
 
 module.exports = router;

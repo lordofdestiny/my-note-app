@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { toTitleCase } = require("../../utli/helpers");
 
 const userSchema = mongoose.Schema({
   _id: {
@@ -45,7 +46,7 @@ const userSchema = mongoose.Schema({
 userSchema.statics.checkField = function(field, value) {
   return new Promise((resolve, reject) => {
     if (!value) {
-      const error = new Error(`${field} value not provided!`);
+      const error = new Error(`${toTitleCase(field)} not provided!`);
       error.status = 400;
       reject(error);
     } else {
@@ -54,7 +55,7 @@ userSchema.statics.checkField = function(field, value) {
         .then(user => {
           if (user.length >= 1) {
             const error = new Error(
-              `A user with ${field} of value "${value}" already exists!`
+              `A user with this ${field} already exists!`
             );
             error.status = 409;
             reject(error);

@@ -1,21 +1,23 @@
 const User = require("../models/user");
+const Note = require("../models/note");
 const helper = require("../../utli/helpers");
 
 const page_index = (req, res) => {
   const auth = req.isAuthenticated();
   const { _id } = req.user;
-  User.findById(_id, "first_name last_name")
-    .exec()
+  User.findById(_id, "first_name last_name notes")
+    .populate("notes")
     .then(user => {
       res.render("index", {
+        pjax: req.pjax,
+        user,
         auth,
         titleExtend: "Home",
-        user,
         showOptions: true
       });
     })
     .catch(error => {
-      res.status(500).send(error);
+      res.status(500).render("error", { error: error.message });
     });
 };
 

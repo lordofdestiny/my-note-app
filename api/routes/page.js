@@ -13,6 +13,4 @@ router.get("/login", pageController.page_login);
 
 router.get("/signup", pageController.page_signup);
 
-router.get("/error", pageController.page_error);
-
 module.exports = router;

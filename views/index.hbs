@@ -4,9 +4,25 @@
         <div class="col-lg-3">
         </div>
         <div class="col-lg-6">
-            {{>main}}
+            <div class="jumbotron fix-height">
+                <div class="d-felx justify-content-between flex-row">
+                    <button type="button" class="btn btn-labeled btn-success btn-icon" data-toggle="modal"
+                        data-target="#createNote">
+                        <span class="btn-label">
+                            <i class="fas fa-plus-circle"></i>
+                        </span>
+                        New Note
+                    </button>
+                </div>
+                <h2 class="text-right">All notes</h2>
+                <hr />
+                <div id="notes" class="container-fluid list-group scroll-this">
+                    {{>notes (dataSet "notes" user.notes "pjax" pjax)}}
+                </div>
+            </div>
         </div>
         <div class="col-lg-3">
         </div>
     </div>
 </div>
+{{>modals/new}}

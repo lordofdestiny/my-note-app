@@ -1,23 +1,3 @@
-// const es = new EventSource("/note/sse");
-
-function showAll() {
-  $("#allNotes").show();
-  $("#todayNotes").hide();
-  $("#bookmarkNotes").hide();
-}
-
-function showToday() {
-  $("#allNotes").hide();
-  $("#todayNotes").show();
-  $("#bookmarkNotes").hide();
-}
-
-function showBookmarks() {
-  $("#allNotes").hide();
-  $("#todayNotes").hide();
-  $("#bookmarkNotes").show();
-}
-
 $(document).ready(() => {
   $("#picker").dateTimePicker({
     dateFormat: "DD.MM.YYYY. [at] HH:mm",
@@ -25,17 +5,6 @@ $(document).ready(() => {
     positionShift: { top: -100, left: -100 }, //Add event for moving this shit
     buttonTitle: "Set time"
   }); //Allow datetime picker
-
-  //Setup click events
-  $("#toggleAll").click(() => {
-    showAll();
-  });
-  $("#toggleToday").click(() => {
-    showToday();
-  });
-  $("#toggleBookmarks").click(() => {
-    showBookmarks();
-  });
 
   const $result = $("#result");
   const $hideDate = $("#hideDate");
@@ -53,8 +22,4 @@ $(document).ready(() => {
       $picker.hide();
     }
   });
-
-  // es.addEventListener("new", data => {
-  //   console.log(data);
-  // });
 });

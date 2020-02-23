@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { toTitleCase } = require("../../utli/helpers");
+const { toTitleCase } = require("../../utlis/helpers");
 
 const userSchema = mongoose.Schema({
   _id: {

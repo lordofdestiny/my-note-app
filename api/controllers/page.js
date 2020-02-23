@@ -1,8 +1,8 @@
 const User = require("../models/user");
 const Note = require("../models/note");
-const helper = require("../../utli/helpers");
+const helper = require("../../utlis/helpers");
 
-const page_index = (req, res) => {
+const page_index = (req, res, next) => {
   const auth = req.isAuthenticated();
   const { _id } = req.user;
   User.findById(_id, "first_name last_name notes")
@@ -17,7 +17,9 @@ const page_index = (req, res) => {
       });
     })
     .catch(error => {
-      res.status(500).render("error", { error: error.message });
+      error.status = 500;
+      next(error);
+      //res.status(500).render("error", { error: error.message });
     });
 };
 
@@ -34,7 +36,9 @@ const page_profile = (req, res) => {
       });
     })
     .catch(error => {
-      res.render("error", { error: error.message });
+      error.status = 404;
+      next(error);
+      //res.render("error", { error: error.message });
     });
 };
 
@@ -67,19 +71,9 @@ const page_signup = (req, res) => {
   }
 };
 
-const page_error = (req, res) => {
-  const flash = req.flash("server-error");
-  if (flash.length == 0) {
-    res.redirect("/");
-  } else {
-    res.render("error", { flash });
-  }
-};
-
 module.exports = {
   page_index,
   page_profile,
   page_login,
-  page_signup,
-  page_error
+  page_signup
 };

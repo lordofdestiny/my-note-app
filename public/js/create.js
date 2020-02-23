@@ -13,11 +13,11 @@ $(newNoteForm).submit("form[data-pjax]", function(event) {
     axios
       .post("/note", data)
       .then(result => {
-        $.pjax.reload("#allNotes", {
+        $.pjax.reload("#notes", {
           push: false,
           replace: true,
           timeout: 3000,
-          fragment: "#allNotes"
+          fragment: "#notes"
         });
       })
       .catch(error => {

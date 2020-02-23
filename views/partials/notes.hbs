@@ -1,11 +1,12 @@
 {{#if this.pjax}}
   <html>
-    <div id="allNotes">
+  <div id="{{"allNotes"}}">
 {{/if}}
-  {{#each (reverse this.notes)}}
-    {{>templates/note this}}
-  {{/each}}
+{{#each (reverse this.notes)}}
+  {{>templates/note this}}
+{{/each}}
 {{#if this.pjax}}
-    </div>
+  </div>
+
   </html>
 {{/if}}

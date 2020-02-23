@@ -3,7 +3,7 @@ const moment = require("moment");
 
 const serialize = obj =>
   Object.keys(obj).reduce(
-    (acc, key) => (key != "_id" ? acc.push([key, obj[key]]) : acc),
+    (acc, key) => (key != "_id" ? (acc.push([key, obj[key]]), acc) : acc),
     []
   );
 
@@ -60,6 +60,12 @@ const dataSet = (...params) =>
     return acc;
   }, {});
 
+const or = (p1, p2) => p1 || p2;
+
+const and = (p1, p2) => p1 && p2;
+
+const not = value => !value;
+
 module.exports = {
   serialize,
   concat,
@@ -74,5 +80,8 @@ module.exports = {
   reverse,
   flashMessage,
   shorten,
-  dataSet
+  dataSet,
+  and,
+  not,
+  or
 };

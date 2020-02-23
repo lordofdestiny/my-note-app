@@ -1,5 +1,5 @@
 const http = require("http");
-const config = require("./config");
+const config = require("./utlis/config");
 const app = require("./app.js");
 
 const port = config.port || 3000;

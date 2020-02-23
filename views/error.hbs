@@ -2,8 +2,15 @@
     <div class="jumbotron">
         <h1>Request error</h1>
         <hr />
-        <p>Error : {{flash.[0].message}}</p>
-        <p>{{flash.[0].stack}}</p>
-        <p>Please talk to support about this issue!</p>
+        <h3>Error message : {{or flash.[0].message error.message}}</h3>
+        {{#if flash.[0].stack}}
+            {{flash.[0].stack}}
+        {{else if dev}}
+            <h3>Stack</h3>
+            {{error.stack}}
+        {{/if}}
+        {{#if (not dev)}}
+            <p>Please talk to support about this issue!</p>
+        {{/if}}
     </div>
 </div>

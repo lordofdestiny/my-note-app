@@ -6,15 +6,11 @@ const mongoose = require("mongoose");
 const flash = require("connect-flash");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const handlebars = require("express-handlebars");
 const MongoStore = require("connect-mongo")(session);
 const requestLogger = require("./api/middleware/requestLogger");
 
 //Import environment configuration
-const config = require("./config");
-
-//Helpers
-const handlebarsHelpers = require("./utli/hbsHelpers");
+const config = require("./utlis/config");
 
 //Passport strategies
 const localStrategy = require("./strategies/local");
@@ -30,18 +26,14 @@ const pjax = require("./api/middleware/pjax");
 const sameSite = require("./api/middleware/sameSite.js");
 const ErrorMiddleware = require("./api/middleware/error");
 
-//Create Handlebars view engine configuration
-const hbs = handlebars.create({
-  extname: "hbs",
-  defaultLayout: "layout",
-  layoutsDir: __dirname + "/views/layouts/",
-  helpers: handlebarsHelpers
-});
+//View engine include
+const handlebars = require("./utlis/handlebars/handlebars");
 
+//Create express app
 const app = express();
 
 //Create Handlebars view engine
-app.engine("hbs", hbs.engine);
+app.engine("hbs", handlebars.engine);
 //Set hadnlebars as view engine
 app.set("view engine", "hbs");
 //Setup views path
@@ -71,7 +63,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //Middlewares
 app.use(morgan("dev"));
-app.use(CORS);
+app.use(CORS());
 app.use(pjax());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -110,6 +102,7 @@ app.use("/note", noteRoutes);
 passport.use(localStrategy);
 
 app.use(ErrorMiddleware.error_not_found);
-app.use(ErrorMiddleware.error_not_catched);
+app.use(ErrorMiddleware.error_server_error);
+app.use(ErrorMiddleware.error_not_caught);
 
 module.exports = app;

@@ -8,8 +8,6 @@ const authenticate = require("../middleware/auth");
 const Note = require("../models/note");
 const User = require("../models/user");
 
-const sse = new SSE([], { isSerialized: false, initialEvent: "all" });
-
 //get all notes as array
 router.get("/", authenticate(), (req, res) => {
   const { _id } = req.user;
@@ -23,8 +21,6 @@ router.get("/", authenticate(), (req, res) => {
     });
 });
 
-router.get("/sse", sse.init);
-
 router.post("/", authenticate(), (req, res) => {
   const { _id } = req.user;
   const user_id = new mongoose.Types.ObjectId(_id);
@@ -35,7 +31,6 @@ router.post("/", authenticate(), (req, res) => {
     .save()
     .then(note => {
       res.status(200).json({ note });
-      //sse.send(note, "new");
       const { _id, user_id } = note;
       return User.updateOne({ _id: user_id }, { $push: { notes: _id } }).exec();
     })

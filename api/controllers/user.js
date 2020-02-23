@@ -33,7 +33,6 @@ const user_singup = (req, res, next) => {
     })
     .catch(error => {
       const status = error.status ? error.status : 500;
-
       if (status == 500) {
         req.flash("server-error", {
           message: error.message,

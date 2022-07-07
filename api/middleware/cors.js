@@ -1,4 +1,4 @@
-module.exports = function() {
+module.exports = function () {
   return (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
@@ -10,7 +10,7 @@ module.exports = function() {
         "Access-Controll-Allow-Methods",
         "PUT, POST, PATCH, DELETE, GET"
       );
-      return res.status(200).json({});
+      return res.status(204).json({});
     }
     next();
   };

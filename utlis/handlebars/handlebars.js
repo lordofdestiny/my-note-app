@@ -1,6 +1,6 @@
 const path = require("path");
 const handlebars = require("express-handlebars");
-const handlebarsHelpers = require("./helpers");
+const handlebarsHelpers = require("./handlebarsHelpers");
 
 const layoutsDir = path.join(__dirname, "..", "..", "/views/layouts/");
 
@@ -9,7 +9,7 @@ const hbs = handlebars.create({
   extname: "hbs",
   defaultLayout: "layout",
   layoutsDir,
-  helpers: handlebarsHelpers
+  helpers: handlebarsHelpers,
 });
 
 module.exports = hbs;

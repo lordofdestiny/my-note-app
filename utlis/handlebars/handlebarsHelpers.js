@@ -1,11 +1,13 @@
-require("./helpers");
+require("./handlebarsHelpers");
 const moment = require("moment");
 
-const serialize = obj =>
-  Object.keys(obj).reduce(
-    (acc, key) => (key != "_id" ? (acc.push([key, obj[key]]), acc) : acc),
-    []
-  );
+const serialize = (obj) => {
+  const set = new Set(["_id", "password", "__v", "notes"]);
+  return Object.keys(obj).reduce((acc, key) => {
+    if (!set.has(key)) acc.push([key, obj[key]]);
+    return acc;
+  }, []);
+};
 
 const concat = (...strings) => strings.slice(0, -1).join("");
 
@@ -20,9 +22,9 @@ const navbarLink = (name, path, active) =>
     </a>
   </li>`;
 
-const name = user => `${user.first_name} ${user.last_name}`.toTitleCase();
+const name = (user) => `${user.first_name} ${user.last_name}`.toTitleCase();
 
-const alert = value => {
+const alert = (value) => {
   console.log(value);
 };
 
@@ -31,23 +33,21 @@ const build_title = (title, titleExtend) =>
 
 const str = (...strings) => strings.slice(0, -1).join(" ");
 
-const timeBetween = date =>
-  moment()
-    .to(date)
-    .toTitleCase();
+const timeBetween = (date) => moment().to(date).toTitleCase();
 
 const momentIt = (date, format) => moment(date).format(format);
 
-const reverse = array => array.reverse();
+const reverse = (array) => array.reverse();
 
-const flashMessage = flash_date => {
+const flashMessage = (flash_date) => {
   const time = Date.now() - flash_date.valueOf();
   if (Math.abs(time) <= 90 * 1000) return `Now`;
   if (time > 0) return `Expired ${timeBetween(flash_date)}.`;
   else if (time < 0) return `${timeBetween(flash_date)}`;
 };
 
-const shorten = text => (text.length < 100 ? text : text.substr(0, 60) + "...");
+const shorten = (text) =>
+  text.length < 100 ? text : text.substr(0, 60) + "...";
 
 const dataSet = (...params) =>
   params.reduce((acc, value, index) => {
@@ -64,9 +64,17 @@ const or = (p1, p2) => p1 || p2;
 
 const and = (p1, p2) => p1 && p2;
 
-const not = value => !value;
+const not = (value) => !value;
+
+const equals = (v1, v2) => v1 == v2;
+const notEquals = (v1, v2) => v1 != v2;
+
+const defined = (value) => value ?? false;
 
 module.exports = {
+  defined,
+  equals,
+  notEquals,
   serialize,
   concat,
   title,
@@ -83,5 +91,5 @@ module.exports = {
   dataSet,
   and,
   not,
-  or
+  or,
 };

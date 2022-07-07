@@ -1,4 +1,6 @@
-* Add Server Side Validation feedback  to Log-In and Sign-Up
-* Make sign up multipage
-* Inplement email verification mechanism on sign up
-* Add ping test
+* Add Server Side Validation feedback  to Log-In and Sign-Up - DONE
+    Maybe make it nicer
+* Add deletion
+* Add editing
+* Show login/signup errors as popups
+*Make timestamp refreshing on frontent

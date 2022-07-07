@@ -4,14 +4,9 @@ const express = require("express");
 const passport = require("passport");
 const mongoose = require("mongoose");
 const flash = require("connect-flash");
-const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const MongoStore = require("connect-mongo")(session);
-const requestLogger = require("./api/middleware/requestLogger");
-
-//Import environment configuration
-const config = require("./utlis/config");
-
+const { getEnv } = require("./utlis/config");
+const { buildMongoDBConnectionURI } = require("./utlis/helpers");
 //Passport strategies
 const localStrategy = require("./strategies/local");
 
@@ -24,10 +19,33 @@ const noteRoutes = require("./api/routes/note");
 const CORS = require("./api/middleware/cors");
 const pjax = require("./api/middleware/pjax");
 const sameSite = require("./api/middleware/sameSite.js");
-const ErrorMiddleware = require("./api/middleware/error");
+const ErrorHandler = require("./api/middleware/error");
+const session = require("./api/middleware/session");
 
 //View engine include
 const handlebars = require("./utlis/handlebars/handlebars");
+
+//Connect to MongoDB with Mongoose
+mongoose.connect(
+  buildMongoDBConnectionURI(getEnv().database),
+  {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+    appname: process.env.npm_package_name,
+  },
+  (error, db) => {
+    if (error) {
+      console.error(error.message);
+      return process.exit(0);
+    }
+    console.log(
+      `Sucessfuly connected to MongoDB as ${db.connection.user ?? "local dev"}!`
+    );
+  }
+);
+mongoose.Promise = global.Promise;
 
 //Create express app
 const app = express();
@@ -39,25 +57,6 @@ app.set("view engine", "hbs");
 //Setup views path
 app.set("viewes", path.join(__dirname, "views"));
 
-//Connect to MongoDB with Mongoose
-mongoose.connect(
-  "mongodb://localhost:27017/note-app",
-  {
-    useCreateIndex: true,
-    useNewUrlParser: true,
-    appname: "my-note-app"
-  },
-  (error, db) => {
-    if (error) {
-      console.error(error.message);
-      process.exit(0);
-    } else {
-      console.log("Sucessfuly connected to MongoDB!");
-    }
-  }
-);
-mongoose.Promise = global.Promise;
-
 //Setup static file serving
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -67,42 +66,28 @@ app.use(CORS());
 app.use(pjax());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-  requestLogger({
-    filter: ["/note"]
-  })
-);
 app.use(cookieParser());
 app.use(sameSite());
-
-//Session setup
-app.use(
-  session({
-    resave: false,
-    secret: config.secret,
-    saveUninitialized: true,
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
-    //cookie: { maxAge: 60 * 60 * 1000 } //1 Hour
-  })
-);
+app.use(session());
 
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.post("/", (req, res) => {
-  res.send(req.body);
-});
+// app.post("/", (req, res) => {
+//   res.send(req.body);
+// });
 
 //Setup imported routes
 app.use("/", pageRoutes);
 app.use("/user", userRoutes);
 app.use("/note", noteRoutes);
 
+//Use passport strategies
 passport.use(localStrategy);
 
-app.use(ErrorMiddleware.error_not_found);
-app.use(ErrorMiddleware.error_server_error);
-app.use(ErrorMiddleware.error_not_caught);
+app.use(ErrorHandler.errorNotFound);
+app.use(ErrorHandler.errorServerError);
+app.use(ErrorHandler.errorNotCaught);
 
 module.exports = app;

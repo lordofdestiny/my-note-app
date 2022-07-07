@@ -2,7 +2,7 @@ const allNotes = document.getElementById("allNotes");
 const newNoteForm = document.getElementById("newNoteForm");
 const sendNew = document.getElementById("sendNew");
 
-$(newNoteForm).submit("form[data-pjax]", function(event) {
+$(newNoteForm).submit("form[data-pjax]", function (event) {
   event.preventDefault();
   event.stopPropagation();
   const valid = validateForm(this);
@@ -12,16 +12,16 @@ $(newNoteForm).submit("form[data-pjax]", function(event) {
     data.flash_date = fd == "" ? null : parseFlashDate(fd);
     axios
       .post("/note", data)
-      .then(result => {
+      .then((result) => {
         $.pjax.reload("#notes", {
           push: false,
           replace: true,
           timeout: 3000,
-          fragment: "#notes"
+          fragment: "#notes",
         });
       })
-      .catch(error => {
-        alert("Note wasnt created! We are sorry for the inconvinience!");
+      .catch((error) => {
+        alert("Note wasn't created! We are sorry for the inconvinience!");
       })
       .finally(() => {
         $("#createNote").modal("hide");

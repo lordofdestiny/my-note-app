@@ -1,19 +1,18 @@
 {{>navbar}}
 <main role="main" class="container">
     <div class="row">
-        <div class="col-3"></div>
+        <div class="col"></div>
         <div class="col-6">
             <div class="jumbotron">
                 <form class="needs-validation" method="POST" action="{{route}}" novalidate>
-                    <h2>{{titleExtend}}</h2>
-                    <hr />
-                    <div class="form-group">
+                    <h2 class="text-center mb-4">{{titleExtend}}</h2>
+                    <div class="form-group col-10 ml-auto mr-auto">
                         <label for="username">Username</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroupPrepend">#</span>
+                                <span class="input-group-text" id="inputGroupPrepend">@</span>
                             </div>
-                            <input type="text" class="form-control" name="username" id="username" placeholder="Username"
+                            <input type="text" class="form-control" name="username" id="username"
                                 value="{{flash.username}}" aria-describedby="inputGroupPrepend" required
                                 autocomplete="off" minlength="8" maxlength="30">
                             <div class="invalid-feedback">
@@ -21,21 +20,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-10 ml-auto mr-auto">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" value="" placeholder="Password"
+                        <input type="password" class="form-control" id="password" name="password" value="" 
                             required autocomplete="off" minlength="6" maxlength="30" >
                         <div class="invalid-feedback">
                             Please enter your password
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Log In</button>
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-primary">Log In</button>
+                    </div>
                 </form>
-                <div class="tip">
-                    <a href="/signup">Don't have an account? Sign up here.</a>
+                <div class="row justify-content-center">
+                    <div class="tip">
+                        <span>Don't have an account? <a href="/signup"> Sign up here.</a></span>
+                    </div>
                 </div>
             </div>
-            {{#if flash}}
+            {{#if flash.error}}
                 <div class="container">
                     <div class="alert alert-danger" role="alert">
                         {{flash.error}}
@@ -43,7 +46,7 @@
                 </div>
             {{/if}}
         </div>
-        <div class="col-3"></div>
+        <div class="col"></div>
     </div>
 </main>
 {{>defaultValidation}}

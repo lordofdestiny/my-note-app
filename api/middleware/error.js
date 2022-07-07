@@ -1,11 +1,11 @@
-const error_not_found = (req, res, next) => {
+const errorNotFound = (req, res, next) => {
   res.render("notfound", {
     route: req.baseUrl + req.path,
-    titleExtend: "Error"
+    titleExtend: "Error",
   });
 };
 
-const error_server_error = (error, req, res, next) => {
+const errorServerError = (error, req, res, next) => {
   if (error.status == 500) {
     res.render("error", { error, dev: false });
   } else {
@@ -13,15 +13,36 @@ const error_server_error = (error, req, res, next) => {
   }
 };
 
-const error_not_caught = (error, req, res, next) => {
+const errorNotCaught = (error, req, res, next) => {
   res.render("error", {
     error,
-    dev: true
+    dev: true,
   });
 };
 
 module.exports = {
-  error_not_found,
-  error_server_error,
-  error_not_caught
+  errorNotFound,
+  errorServerError,
+  errorNotCaught,
 };
+
+// const errorNotFound = (req, res, next) => {
+//   const error = new Error("Not found");
+//   error.status = 404;
+//   next(error);
+// };
+
+// const errorNotCaught = (error, req, res, next) => {
+//   res.status(error.status || 500);
+//   res.json({
+//     error: {
+//       message: error.message,
+//       stack: error.stack,
+//     },
+//   });
+// };
+
+// module.exports = {
+//   errorNotFound,
+//   errorNotCaught,
+// };

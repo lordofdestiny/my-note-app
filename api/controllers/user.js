@@ -2,61 +2,49 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 
 const User = require("../models/user");
+// const Note = require("../models/note");
 
-const user_singup = (req, res, next) => {
+const user_singup = async (req, res, next) => {
   const data = req.body;
-  const { email, username, password } = data;
+  try {
+    // Hash the password
+    const hash = await bcrypt.hash(data.password, 10);
 
-  User.checkField("email", email)
-    .then(() => {
-      return User.checkField("username", username);
-    })
-    .then(() => {
-      return bcrypt.hash(password, 10).then(hash => hash);
-    })
-    .then(hash => {
-      const _id = new mongoose.Types.ObjectId();
-
-      const user = new User({
-        _id,
-        ...data,
-        password: hash
-      });
-
-      return user.save().then(user => user);
-    })
-    .then(user => {
-      //later redirect to /confirm and send email
-      req.login(user, err => {
-        res.render("index", { user }); //fix
-      });
-    })
-    .catch(error => {
-      const status = error.status ? error.status : 500;
-      if (status == 500) {
-        req.flash("server-error", {
-          message: error.message,
-          stack: error.stack
-        });
-        res.redirect("/error");
-      } else {
-        req.flash("request-error", {
-          message: error.message,
-          data
-        });
-        res.redirect("/signup");
-        //res.status(status).json({ error: { message: error.message } });
-      }
+    // Create a new user from the User model
+    const user = new User({
+      _id: mongoose.Types.ObjectId(),
+      ...data,
+      password: hash,
     });
+    // Save the user. If validation error happens, it is caught later
+    const newUser = (await user.save()).toObject();
+
+    // Once new user is created log him in and redirect him to index
+    req.login(newUser, async () => {
+      //later redirect to /confirm and send email
+      res.redirect("/");
+    });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      console.log(error);
+      req.flash("request-error", { ...error, data });
+      res.redirect("/signup");
+      //res.status(status).json({ error: { message: error.message } });
+    } else {
+      return next(error);
+    }
+  }
 };
 
 const user_logout = (req, res, next) => {
   req.logout();
-  req.session.destroy();
-  res.redirect("/");
+  res.clearCookie("connect.sid");
+  req.session.destroy(() => {
+    res.redirect("/");
+  });
 };
 
 module.exports = {
   user_singup,
-  user_logout
+  user_logout,
 };

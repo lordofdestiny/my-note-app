@@ -2,78 +2,62 @@ const User = require("../models/user");
 const Note = require("../models/note");
 const helper = require("../../utlis/helpers");
 
-const page_index = (req, res, next) => {
-  const auth = req.isAuthenticated();
+const page_index = async (req, res, next) => {
   const { _id } = req.user;
-  User.findById(_id, "first_name last_name notes")
-    .populate("notes")
-    .then(user => {
-      res.render("index", {
-        pjax: req.pjax,
-        user,
-        auth,
-        titleExtend: "Home",
-        showOptions: true
-      });
-    })
-    .catch(error => {
-      error.status = 500;
-      next(error);
-      //res.status(500).render("error", { error: error.message });
+  try {
+    const notes = await Note.find({ user_id: _id }).lean().exec();
+    res.render("index", {
+      pjax: req.pjax,
+      user: { ...req.user, notes },
+      auth: req.isAuthenticated(),
+      titleExtend: "Home",
+      showOptions: true,
     });
+  } catch (error) {
+    error.status = 500;
+    next(error);
+    //res.status(500).render("error", { error: error.message });
+  }
 };
 
 const page_profile = (req, res) => {
-  const auth = req.isAuthenticated();
-  const { _id } = req.user;
-  User.findById(_id, "first_name last_name username email phone gender")
-    .then(user => {
-      res.render("profile", {
-        user: user.toObject(),
-        auth,
-        titleExtend: "Profile",
-        active: req.path
-      });
-    })
-    .catch(error => {
-      error.status = 404;
-      next(error);
-      //res.render("error", { error: error.message });
-    });
+  res.render("profile", {
+    user: req.user,
+    auth: req.isAuthenticated(),
+    titleExtend: "Profile",
+    active: req.path,
+  });
 };
 
 const page_login = (req, res) => {
-  const auth = req.isAuthenticated();
-  if (auth) {
-    res.redirect("/");
-  } else {
-    res.render("login", {
-      titleExtend: "Log In",
-      auth,
-      route: `/user${req.path}`,
-      flash: helper.flashToError(req.flash("error"))
-    });
-  }
+  console.log(req.body);
+  res.render("login", {
+    titleExtend: "Log In",
+    auth: req.isAuthenticated(),
+    route: `/user${req.path}`,
+    flash: {
+      error: req.flash("error")[0],
+      username: req.flash("username")[0],
+    },
+  });
 };
 
 const page_signup = (req, res) => {
   const flash = req.flash("request-error")[0];
-  const auth = req.isAuthenticated();
-  if (auth) {
-    res.redirect("/");
-  } else {
-    res.status(200).render("signup", {
-      titleExtend: "Sign Up",
-      auth,
-      route: `/user${req.path}`,
-      flash
-    });
+  if (flash?.error) {
+    flash.errors = helper.buildErrorArray(flash.errors);
   }
+  res.status(200).render("signup", {
+    titleExtend: "Sign Up",
+    auth: req.isAuthenticated(),
+    route: `/user${req.path}`,
+    flash,
+  });
 };
 
 module.exports = {
   page_index,
   page_profile,
   page_login,
-  page_signup
+  page_signup,
 };

@@ -3,24 +3,27 @@ function toTitleCase(str) {
     ? ""
     : str
         .split(" ")
-        .map(word => word[0].toUpperCase() + word.substr(1))
+        .map((word) => word[0].toUpperCase() + word.substr(1))
         .join(" ");
 }
 
-String.prototype.toTitleCase = function() {
-  return toTitleCase(this);
-};
+const buildErrorArray = (error) => Object.keys(error).map((key) => error[key]);
 
-const flashToError = str => {
-  if (str.length == 0) return null;
-  [error, username] = str[0].split("-");
-  return {
-    error,
-    username
+if (!String.prototype.toTitleCase) {
+  String.prototype.toTitleCase = function () {
+    return toTitleCase(this);
   };
+}
+
+const buildMongoDBConnectionURI = (connectionDetails) => {
+  let { username, password, host, port, name } = connectionDetails;
+  const authority =
+    username == "" || password == "" ? "" : `${username}:${password}@`;
+  return `mongodb://${authority}${host}:${port}/${name}`;
 };
 
 module.exports = {
-  flashToError,
-  toTitleCase
+  toTitleCase,
+  buildErrorArray,
+  buildMongoDBConnectionURI,
 };

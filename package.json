@@ -23,7 +23,7 @@
     "handlebars": "^4.3.0",
     "moment": "^2.24.0",
     "mongo-store": "0.0.2",
-    "mongoose": "^5.7.5",
+    "mongoose": "^5.13.20",
     "morgan": "^1.9.1",
     "nodemon": "^2.0.15",
     "passport": "^0.4.0",
